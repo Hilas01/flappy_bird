@@ -1,3 +1,4 @@
+import sys
 import pygame
 
 pygame.init()
@@ -36,7 +37,8 @@ class Bird:
         self._y -= JUMP
 
     def check_exit(self):
-        pass
+        if self._y < -50 or self._y > 500:
+            sys.exit()
 
 
 class Pipe:
@@ -71,6 +73,7 @@ while running:
 
     draw_window(bird, pipe)
     bird.gravity()
+    bird.check_exit()
     pipe.move()
 
     key = pygame.key.get_pressed()
