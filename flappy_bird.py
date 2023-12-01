@@ -48,6 +48,9 @@ class Pipe:
     def draw(self, window):
         window.blit(self._img, (self._x, self._y))
 
+    def move(self):
+        self._x -= 5
+
 
 def draw_window(bird, pipe):
     WIN.blit(BG, (0, 0))
@@ -68,6 +71,7 @@ while running:
 
     draw_window(bird, pipe)
     bird.gravity()
+    pipe.move()
 
     key = pygame.key.get_pressed()
     if key[pygame.K_SPACE]:
