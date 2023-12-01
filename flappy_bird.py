@@ -53,6 +53,12 @@ class Pipe:
     def move(self):
         self._x -= 5
 
+    def pos(self):
+        return self._x
+
+    def spawn(self):
+        self._x = 950
+
 
 def draw_window(bird, pipe):
     WIN.blit(BG, (0, 0))
@@ -75,6 +81,9 @@ while running:
     bird.gravity()
     bird.check_exit()
     pipe.move()
+
+    if pipe.pos() < -275:
+        pipe.spawn()
 
     key = pygame.key.get_pressed()
     if key[pygame.K_SPACE]:
