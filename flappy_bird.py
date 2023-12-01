@@ -60,15 +60,16 @@ class Pipe:
         self._x = 950
 
 
-def draw_window(bird, pipe):
+def draw_window(bird, pipes):
     WIN.blit(BG, (0, 0))
     bird.draw(WIN)
-    pipe.draw(WIN)
+    for pipe in pipes:
+        pipe.draw(WIN)
     pygame.display.update()
 
 
 bird = Bird(100, 250)
-pipe = Pipe(500, -50)
+pipes = [Pipe(500, -50), Pipe(400, -50), Pipe(300, -50), Pipe(200, -50), Pipe(100, -50)]
 
 running = True
 while running:
@@ -77,13 +78,13 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    draw_window(bird, pipe)
+    draw_window(bird, pipes)
     bird.gravity()
     bird.check_exit()
-    pipe.move()
-
-    if pipe.pos() < -275:
-        pipe.spawn()
+    for pipe in pipes:
+        pipe.move()
+        if pipe.pos() < -275:
+            pipe.spawn()
 
     key = pygame.key.get_pressed()
     if key[pygame.K_SPACE]:
