@@ -9,11 +9,11 @@ BG = pygame.image.load('pics/background.png')
 GRAVITY = 2.5
 JUMP = 10
 
-SCREEN_WIGHT, SCREEN_HEIGHT = 900, 504
+SCREEN_WIGHT, SCREEN_HEIGHT = 900, 403
 WIN = pygame.display.set_mode((SCREEN_WIGHT, SCREEN_HEIGHT))
 pygame.display.set_caption('Flappy Bird')
 
-bird_wight, bird_height = 75, 75
+bird_wight, bird_height = 60, 60
 bird_img = pygame.image.load('pics/bird.png')
 bird_scaled = pygame.transform.scale(bird_img, (bird_wight, bird_height))
 PIPE_WIGHT, PIPE_HEIGHT = 500, 600
@@ -58,6 +58,7 @@ class Pipe:
 
     def spawn(self):
         self._x = 950 + gap
+        self._y = -50 + dynamic_height
 
 
 def draw_window(bird, pipes):
@@ -74,6 +75,7 @@ pipes = [Pipe(500, -50), Pipe(400, -50), Pipe(300, -50), Pipe(200, -50), Pipe(10
 running = True
 while running:
     gap = random.randint(-200, 200)
+    dynamic_height = random.randint(-100, 0)
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -86,7 +88,6 @@ while running:
         pipe.move()
         if pipe.pos() < -275:
             pipe.spawn()
-
 
     key = pygame.key.get_pressed()
     if key[pygame.K_SPACE]:
