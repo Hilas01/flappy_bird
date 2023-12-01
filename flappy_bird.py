@@ -1,3 +1,4 @@
+import random
 import sys
 import pygame
 
@@ -7,6 +8,7 @@ pygame.font.init()
 BG = pygame.image.load('pics/background.png')
 GRAVITY = 2.5
 JUMP = 10
+count = 0
 clock = pygame.time.Clock()
 
 SCREEN_WIGHT, SCREEN_HEIGHT = 900, 504
@@ -46,9 +48,10 @@ class Pipe:
         self._img = pipe_scaled
         self._x = x
         self._y = y
+        self._gap = 150
 
     def draw(self, window):
-        window.blit(self._img, (self._x, self._y))
+        window.blit(self._img, (self._x + self._gap, self._y))
 
     def move(self):
         self._x -= 5
@@ -58,6 +61,9 @@ class Pipe:
 
     def spawn(self):
         self._x = 950
+
+    def change_gap(self):
+        self._gap = random.randint(100, 1000)
 
 
 def draw_window(bird, pipes):
@@ -73,6 +79,7 @@ pipes = [Pipe(500, -50), Pipe(400, -50), Pipe(300, -50), Pipe(200, -50), Pipe(10
 
 running = True
 while running:
+    count += 1
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -83,6 +90,8 @@ while running:
     bird.check_exit()
     for pipe in pipes:
         pipe.move()
+        if count == 120:
+            pipe.change_gap()
         if pipe.pos() < -275:
             pipe.spawn()
 
