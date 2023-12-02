@@ -7,7 +7,7 @@ pygame.font.init()
 
 BG = pygame.image.load('pics/background.png')
 GRAVITY = 2.5
-JUMP = 10
+JUMP = 50
 
 SCREEN_WIGHT, SCREEN_HEIGHT = 900, 403
 WIN = pygame.display.set_mode((SCREEN_WIGHT, SCREEN_HEIGHT))
@@ -80,6 +80,9 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                bird.jump()
 
     draw_window(bird, pipes)
     bird.gravity()
@@ -89,6 +92,9 @@ while running:
         if pipe.pos() < -275:
             pipe.spawn()
 
-    key = pygame.key.get_pressed()
-    if key[pygame.K_SPACE]:
-        bird.jump()
+
+
+"""
+fix bug with pipes
+change gravity
+"""
