@@ -6,8 +6,9 @@ pygame.init()
 pygame.font.init()
 
 BG = pygame.image.load('pics/background.png')
-GRAVITY = 2.5
-JUMP = 50
+GRAVITY = 0.25
+TERMINAL_VELOCITY = 10
+JUMP = -7
 
 SCREEN_WIGHT, SCREEN_HEIGHT = 900, 403
 WIN = pygame.display.set_mode((SCREEN_WIGHT, SCREEN_HEIGHT))
@@ -26,18 +27,20 @@ class Bird:
         self._img = bird_scaled
         self._x = x
         self._y = y
+        self._velocity = 0
 
     def draw(self, window):
         window.blit(self._img, (self._x, self._y))
 
     def gravity(self):
-        self._y += GRAVITY
+        self._y += self._velocity
+        self._velocity = min(self._velocity + GRAVITY, TERMINAL_VELOCITY)
 
     def jump(self):
-        self._y -= JUMP
+        self._velocity = JUMP
 
     def check_exit(self):
-        if self._y < -50 or self._y > 500:
+        if self._y < -50 or self._y > SCREEN_HEIGHT:
             sys.exit()
 
 
