@@ -9,6 +9,7 @@ BG = pygame.image.load('pics/background.png')
 GRAVITY = 0.25
 TERMINAL_VELOCITY = 10
 JUMP = -7
+clock = pygame.time.Clock()
 
 SCREEN_WIGHT, SCREEN_HEIGHT = 900, 403
 WIN = pygame.display.set_mode((SCREEN_WIGHT, SCREEN_HEIGHT))
@@ -69,7 +70,7 @@ def draw_window(bird, pipes):
     bird.draw(WIN)
     for pipe in pipes:
         pipe.draw(WIN)
-    pygame.display.update()
+    pygame.display.flip()
 
 
 bird = Bird(100, 250)
@@ -95,9 +96,4 @@ while running:
         if pipe.pos() < -275:
             pipe.spawn()
 
-
-
-"""
-fix bug with pipes
-change gravity
-"""
+    clock.tick(60)
