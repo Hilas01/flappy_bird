@@ -150,8 +150,8 @@ while running:
                 bird.jump()
 
     # renders score
-    score_text = font.render(f'Score: {score}', True, (255, 255, 255))
-    score += 1
+    """score_text = font.render(f'Score: {score}', True, (255, 255, 255))
+    score += 1"""
 
     draw_window(bird, pipes)
     bird.gravity()
