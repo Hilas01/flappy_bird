@@ -4,6 +4,7 @@ import pygame
 
 pygame.init()
 pygame.font.init()
+font = pygame.font.Font(None, 36)
 
 BG = pygame.image.load('pics/background.png')
 GRAVITY = 0.25
@@ -13,9 +14,10 @@ clock = pygame.time.Clock()
 score = 0
 
 # creates screen and caption
-SCREEN_WIGHT, SCREEN_HEIGHT = 900, 403
-WIN = pygame.display.set_mode((SCREEN_WIGHT, SCREEN_HEIGHT))
+SCREEN_WIDTH, SCREEN_HEIGHT = 900, 403
+WIN = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('Flappy Bird')
+pygame.display.set_icon(pygame.image.load('pics/epic_sax_guy.jpeg '))
 
 # loaded images and scaled it
 bird_wight, bird_height = 60, 60
@@ -63,6 +65,7 @@ class Bird(pygame.sprite.Sprite):
 
     def check_exit(self):
         if self._y < -50 or self._y > SCREEN_HEIGHT:
+            pygame.quit()
             sys.exit()
 
     def pos(self):
@@ -133,11 +136,9 @@ pipe_group = pygame.sprite.Group()
 bird_group.add(bird)
 for pipe in pipes:
     pipe_group.add(pipe)
-    print(pipe)
 
 running = True
 while running:
-    font = pygame.font.Font(None, 36)
     gap = random.randint(75, 200)
     dynamic_height = random.randint(-100, 0)
 
@@ -163,10 +164,11 @@ while running:
     # collision
     if pygame.sprite.spritecollide(bird, pipe_group, False, pygame.sprite.collide_mask):
         print('You lost!')
+        print(f'Your Score: {score}')
+        pygame.quit()
         sys.exit()
-
-    # gives the position
-    """print(bird.pos())
-    for pipe in pipes:
-        print(pipe.check_pos())"""
     clock.tick(60)
+"""
+for loop
+off screen pipe
+"""
