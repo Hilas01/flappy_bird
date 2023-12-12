@@ -23,11 +23,15 @@ pipe_img = pygame.image.load('pics/pipe.png')
 pipe_scaled = pygame.transform.scale(pipe_img, (PIPE_WIGHT, PIPE_HEIGHT))
 
 
-class Bird:
+class Bird(pygame.sprite.Sprite):
     def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
         self._img = bird_scaled
-        self._x = x
+        self._rect = self._img.get_rect()
+        self._rect.topleft = (x, y)
+        self._mask = pygame.mask.from_surface(self._img)
         self._y = y
+        self._x = x
         self._velocity = 0
 
     def draw(self, window):
@@ -45,11 +49,14 @@ class Bird:
             sys.exit()
 
 
-class Pipe:
+class Pipe(pygame.sprite.Sprite):
     def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
         self._img = pipe_scaled
-        self._x = x
+        self._rect = self._img.get_rect()
+        self._rect.topleft = (x, y)
         self._y = y
+        self._x = x
 
     def draw(self, window):
         window.blit(self._img, (self._x, self._y))
@@ -76,9 +83,16 @@ def draw_window(bird, pipes):
 bird = Bird(100, 250)
 pipes = [Pipe(500, -50), Pipe(400, -50), Pipe(300, -50), Pipe(200, -50), Pipe(100, -50)]
 
+bird_group = pygame.sprite.Group()
+pipe_group = pygame.sprite.Group()
+
+bird_group.add(bird)
+for pipe in pipes:
+    pipe_group.add(pipe)
+
 running = True
 while running:
-    gap = random.randint(-200, 200)
+    gap = random.randint(75, 200)
     dynamic_height = random.randint(-100, 0)
 
     for event in pygame.event.get():
