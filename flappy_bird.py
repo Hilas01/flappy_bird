@@ -26,20 +26,29 @@ pipe_scaled = pygame.transform.scale(pipe_img, (PIPE_WIGHT, PIPE_HEIGHT))
 class Bird(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self._img = bird_scaled
-        self._rect = self._img.get_rect()
+        self._image = bird_scaled
+        self._rect = self._image.get_rect()
         self._rect.topleft = (x, y)
-        self._mask = pygame.mask.from_surface(self._img)
+        self._mask = pygame.mask.from_surface(self._image)
         self._y = y
         self._x = x
         self._velocity = 0
 
+    @property
+    def rect(self):
+        return self._rect
+
+    @property
+    def image(self):
+        return self._image
+
     def draw(self, window):
-        window.blit(self._img, (self._x, self._y))
+        window.blit(self._image, (self._x, self._y))
 
     def gravity(self):
         self._y += self._velocity
         self._velocity = min(self._velocity + GRAVITY, TERMINAL_VELOCITY)
+        self._rect.y = self._y
 
     def jump(self):
         self._velocity = JUMP
@@ -48,21 +57,34 @@ class Bird(pygame.sprite.Sprite):
         if self._y < -50 or self._y > SCREEN_HEIGHT:
             sys.exit()
 
+    def pos(self):
+        return self._rect.x, self._rect.y
+
 
 class Pipe(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self._img = pipe_scaled
-        self._rect = self._img.get_rect()
+        self._image = pipe_scaled
+        self._rect = self._image.get_rect()
         self._rect.topleft = (x, y)
+        self._mask = pygame.mask.from_surface(self._image)
         self._y = y
         self._x = x
 
+    @property
+    def rect(self):
+        return self._rect
+
+    @property
+    def image(self):
+        return self._image
+
     def draw(self, window):
-        window.blit(self._img, (self._x, self._y))
+        window.blit(self._image, (self._x, self._y))
 
     def move(self):
         self._x -= 5
+        self._rect.x = self._x
 
     def pos(self):
         return self._x
@@ -89,6 +111,7 @@ pipe_group = pygame.sprite.Group()
 bird_group.add(bird)
 for pipe in pipes:
     pipe_group.add(pipe)
+    print(pipe)
 
 running = True
 while running:
@@ -110,4 +133,9 @@ while running:
         if pipe.pos() < -275:
             pipe.spawn()
 
+    if pygame.sprite.spritecollide(bird, pipe_group, False, pygame.sprite.collide_mask):
+        print('You lost!')
+        sys.exit()
+
+    print(bird.pos())
     clock.tick(60)
