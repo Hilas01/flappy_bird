@@ -12,6 +12,7 @@ TERMINAL_VELOCITY = 10
 JUMP = -7
 clock = pygame.time.Clock()
 score = 0
+score_text = font.render(f'Score: {score}', True, (255, 255, 255))
 
 # creates screen and caption
 SCREEN_WIDTH, SCREEN_HEIGHT = 900, 403
@@ -120,7 +121,7 @@ def draw_window(bird, pipes):
     bird.draw(WIN)
     for pipe in pipes:
         pipe.draw(WIN)
-    WIN.blit(score_text, (10, 10))
+    #WIN.blit(score_text, (10, 10))
     pygame.display.flip()
 
 
