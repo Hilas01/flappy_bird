@@ -168,7 +168,3 @@ while running:
         pygame.quit()
         sys.exit()
     clock.tick(60)
-"""
-for loop
-off screen pipe
-"""
