@@ -10,6 +10,7 @@ GRAVITY = 0.25
 TERMINAL_VELOCITY = 10
 JUMP = -7
 clock = pygame.time.Clock()
+score = 0
 
 SCREEN_WIGHT, SCREEN_HEIGHT = 900, 403
 WIN = pygame.display.set_mode((SCREEN_WIGHT, SCREEN_HEIGHT))
@@ -89,9 +90,14 @@ class Pipe(pygame.sprite.Sprite):
     def pos(self):
         return self._x
 
+    def check_pos(self):
+        return self._rect.x, self._rect.y
+
     def spawn(self):
         self._x = 950 + gap
         self._y = -50 + dynamic_height
+        self._rect.x = 950 + gap
+        self._rect.y = -50 + dynamic_height
 
 
 def draw_window(bird, pipes):
@@ -99,6 +105,7 @@ def draw_window(bird, pipes):
     bird.draw(WIN)
     for pipe in pipes:
         pipe.draw(WIN)
+    WIN.blit(score_text, (10, 10))
     pygame.display.flip()
 
 
@@ -115,6 +122,7 @@ for pipe in pipes:
 
 running = True
 while running:
+    font = pygame.font.Font(None, 36)
     gap = random.randint(75, 200)
     dynamic_height = random.randint(-100, 0)
 
@@ -124,6 +132,9 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_SPACE:
                 bird.jump()
+
+    score_text = font.render(f'Score: {score}', True, (255, 255, 255))
+    score += 1
 
     draw_window(bird, pipes)
     bird.gravity()
@@ -137,5 +148,8 @@ while running:
         print('You lost!')
         sys.exit()
 
-    print(bird.pos())
+    #gives the position
+    """print(bird.pos())
+    for pipe in pipes:
+        print(pipe.check_pos())"""
     clock.tick(60)
