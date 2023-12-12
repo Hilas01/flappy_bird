@@ -12,10 +12,12 @@ JUMP = -7
 clock = pygame.time.Clock()
 score = 0
 
+# creates screen and caption
 SCREEN_WIGHT, SCREEN_HEIGHT = 900, 403
 WIN = pygame.display.set_mode((SCREEN_WIGHT, SCREEN_HEIGHT))
 pygame.display.set_caption('Flappy Bird')
 
+# loaded images and scaled it
 bird_wight, bird_height = 60, 60
 bird_img = pygame.image.load('pics/bird.png')
 bird_scaled = pygame.transform.scale(bird_img, (bird_wight, bird_height))
@@ -25,6 +27,11 @@ pipe_scaled = pygame.transform.scale(pipe_img, (PIPE_WIGHT, PIPE_HEIGHT))
 
 
 class Bird(pygame.sprite.Sprite):
+    """
+    class to for the bird and its behaviour
+    :param x
+    :param y
+    """
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self._image = bird_scaled
@@ -63,6 +70,11 @@ class Bird(pygame.sprite.Sprite):
 
 
 class Pipe(pygame.sprite.Sprite):
+    """
+    class to for the pipes and there behaviour
+    :param x
+    :param y
+    """
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
         self._image = pipe_scaled
@@ -109,12 +121,15 @@ def draw_window(bird, pipes):
     pygame.display.flip()
 
 
+# create objects
 bird = Bird(100, 250)
 pipes = [Pipe(500, -50), Pipe(400, -50), Pipe(300, -50), Pipe(200, -50), Pipe(100, -50)]
 
+# create sprite groups
 bird_group = pygame.sprite.Group()
 pipe_group = pygame.sprite.Group()
 
+# add objects to groups
 bird_group.add(bird)
 for pipe in pipes:
     pipe_group.add(pipe)
@@ -133,6 +148,7 @@ while running:
             if event.key == pygame.K_SPACE:
                 bird.jump()
 
+    # renders score
     score_text = font.render(f'Score: {score}', True, (255, 255, 255))
     score += 1
 
@@ -144,11 +160,12 @@ while running:
         if pipe.pos() < -275:
             pipe.spawn()
 
+    # collision
     if pygame.sprite.spritecollide(bird, pipe_group, False, pygame.sprite.collide_mask):
         print('You lost!')
         sys.exit()
 
-    #gives the position
+    # gives the position
     """print(bird.pos())
     for pipe in pipes:
         print(pipe.check_pos())"""
